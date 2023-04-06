@@ -4,6 +4,7 @@ import com.speMajor.demo.exception.ResourceNotFoundException;
 import com.speMajor.demo.model.Employee;
 import com.speMajor.demo.payload.EmployeeDTO;
 import com.speMajor.demo.repository.EmployeeRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public EmployeeDTO addEmployee(EmployeeDTO EmployeeDTO) {
         Employee employee=this.dtoToEmployee(EmployeeDTO);
@@ -55,22 +58,25 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     public Employee dtoToEmployee(EmployeeDTO employeeDTO){
-        Employee employee=new Employee();
-        employee.setId(employeeDTO.getId());
-        employee.setFirstName(employeeDTO.getFirstName());
-        employee.setLastName(employeeDTO.getLastName());
-        employee.setEmailId(employeeDTO.getEmailId());
-        employee.setPassword(employeeDTO.getPassword());
+        Employee employee = this.modelMapper.map(employeeDTO, Employee.class);
+
+//        Employee employee=new Employee();
+//        employee.setId(employeeDTO.getId());
+//        employee.setFirstName(employeeDTO.getFirstName());
+//        employee.setLastName(employeeDTO.getLastName());
+//        employee.setEmailId(employeeDTO.getEmailId());
+//        employee.setPassword(employeeDTO.getPassword());
         return  employee;
     }
 
     public EmployeeDTO EmployeeTodto(Employee employee){
-        EmployeeDTO employeeDTO=new EmployeeDTO();
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setFirstName(employee.getFirstName());
-        employeeDTO.setLastName(employee.getLastName());
-        employeeDTO.setEmailId(employee.getEmailId());
-        employeeDTO.setPassword(employee.getPassword());
+        EmployeeDTO employeeDTO=this.modelMapper.map(employee,EmployeeDTO.class);
+//        EmployeeDTO employeeDTO=new EmployeeDTO();
+//        employeeDTO.setId(employee.getId());
+//        employeeDTO.setFirstName(employee.getFirstName());
+//        employeeDTO.setLastName(employee.getLastName());
+//        employeeDTO.setEmailId(employee.getEmailId());
+//        employeeDTO.setPassword(employee.getPassword());
         return employeeDTO;
     }
 }
