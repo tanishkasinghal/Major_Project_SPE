@@ -95,7 +95,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDTO> serachEmployee(String name) {
-        return null;
+        //List<Employee> employees=this.employeeRepository.searchbyFirstName("%"+key+"%");
+        List<Employee> employees=this.employeeRepository.findByFirstNameContaining(name);
+        List<EmployeeDTO> employeeDTOS=employees.stream().map((employee)-> this.modelMapper.map(employee,EmployeeDTO.class)).collect(Collectors.toList());
+        return employeeDTOS;
     }
 
     public Employee dtoToEmployee(EmployeeDTO employeeDTO){

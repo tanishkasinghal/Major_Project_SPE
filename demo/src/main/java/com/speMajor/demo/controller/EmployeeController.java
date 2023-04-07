@@ -43,7 +43,6 @@ public class EmployeeController {
 
 
 
-    //@RequestParam(value = "sortDir",defaultValue = "asc",required = false) String sortDir, //check repo for actual code not implementing
    @GetMapping("/")
    public ResponseEntity<EmployeeResponse> getAllEmployees(@RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
                                                            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
@@ -57,5 +56,12 @@ public class EmployeeController {
    public ResponseEntity<EmployeeDTO> getEmployeebyId(@PathVariable Long id){
         EmployeeDTO employeeDTO=this.employeeService.getEmployeeById(id);
         return new ResponseEntity<EmployeeDTO>(employeeDTO,HttpStatus.OK);
-   } // working
+   }
+
+   @GetMapping("/search/{keyword}")
+   public ResponseEntity<List<EmployeeDTO>> searchEmployeeByName(
+           @PathVariable("keyword") String keyword){
+    List<EmployeeDTO> employeeDTOS=this.employeeService.serachEmployee(keyword);
+    return new ResponseEntity<List<EmployeeDTO>>(employeeDTOS,HttpStatus.OK);
+   }
 }
