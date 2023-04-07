@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,4 +24,6 @@ public class EmployeeDTO {
     private String emailId;
     @NotEmpty
     private String password;
+    private DepartmentDTO department;
+    private Date joiningDate;
 }
