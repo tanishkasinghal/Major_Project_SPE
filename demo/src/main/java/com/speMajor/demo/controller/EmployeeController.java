@@ -1,4 +1,5 @@
 package com.speMajor.demo.controller;
+import com.speMajor.demo.config.AppConstants;
 import com.speMajor.demo.model.Employee;
 import com.speMajor.demo.payload.ApiResponse;
 import com.speMajor.demo.payload.EmployeeDTO;
@@ -44,10 +45,10 @@ public class EmployeeController {
 
 
    @GetMapping("/")
-   public ResponseEntity<EmployeeResponse> getAllEmployees(@RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                           @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
-                                                           @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy,
-                                                           @RequestParam(value = "sortDir",defaultValue = "asc",required = false) String sortDir){
+   public ResponseEntity<EmployeeResponse> getAllEmployees(@RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                           @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                           @RequestParam(value = "sortBy",defaultValue = AppConstants.SORT_BY,required = false) String sortBy,
+                                                           @RequestParam(value = "sortDir",defaultValue = AppConstants.SORT_DIR,required = false) String sortDir){
        EmployeeResponse employeeResponse=this.employeeService.getAllEmployee(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<EmployeeResponse>(employeeResponse,HttpStatus.OK);
    } //working
