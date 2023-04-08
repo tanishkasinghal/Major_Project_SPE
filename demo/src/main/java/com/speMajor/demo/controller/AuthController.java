@@ -1,4 +1,5 @@
 package com.speMajor.demo.controller;
+import com.speMajor.demo.exception.ApiException;
 import com.speMajor.demo.payload.JwtAuthRequest;
 import com.speMajor.demo.payload.JwtAuthResponse;
 import com.speMajor.demo.security.JwtTokenHelper;
@@ -49,7 +50,7 @@ public class AuthController {
             this.authenticationManager.authenticate(authenticationToken);
         }catch (BadCredentialsException e){
             System.out.println("Invalid Credentials !!");
-            throw new Exception("Invalid Username or Password !!");
+            throw new ApiException("Invalid Username or Password !!");
         }
 
     }
