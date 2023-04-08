@@ -1,0 +1,6 @@
+INSERT INTO emp_role (employee, role)
+VALUES (2,1);
+
+UPDATE employees
+SET password = "$2a$10$BsSDdskQkAMkapSsPLyodODhP8m9mesad2swYAyUbcl837SZkutj2"
+WHERE id=2;
