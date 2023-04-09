@@ -1,12 +1,15 @@
 package com.speMajor.demo.service.Employee;
 
+import com.speMajor.demo.config.AppConstants;
 import com.speMajor.demo.exception.ResourceNotFoundException;
 import com.speMajor.demo.model.Department;
 import com.speMajor.demo.model.Employee;
+import com.speMajor.demo.model.Role;
 import com.speMajor.demo.payload.EmployeeDTO;
 import com.speMajor.demo.payload.EmployeeResponse;
 import com.speMajor.demo.repository.DepartmentRepository;
 import com.speMajor.demo.repository.EmployeeRepository;
+import com.speMajor.demo.repository.RoleRepository;
 import com.speMajor.demo.service.Employee.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,6 +33,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     private DepartmentRepository departmentRepository;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
+    @Override
+    public EmployeeDTO registerNewUser(EmployeeDTO employeeDTO,Long departmentId) {
+        Department department=this.departmentRepository.findById(departmentId).orElseThrow(()->new ResourceNotFoundException("department","dept_id",departmentId));
+        Employee employee=this.modelMapper.map(employeeDTO,Employee.class);
+        employee.setPassword(this.passwordEncoder.encode(employee.getPassword()));
+        employee.setJoiningDate(new Date());
+        employee.setDepartment(department);
+        //roles
+        Role role=this.roleRepository.findById(AppConstants.NORMAL_USER).get();
+        employee.getRoles().add(role);
+        Employee newEmployee=this.employeeRepository.save(employee);
+        return this.modelMapper.map(newEmployee,EmployeeDTO.class);
+    }
+
     @Override
     public EmployeeDTO addEmployee(EmployeeDTO EmployeeDTO,Long departmentId) {
         Department department=this.departmentRepository.findById(departmentId).orElseThrow(()->new ResourceNotFoundException("department","dept_id",departmentId));

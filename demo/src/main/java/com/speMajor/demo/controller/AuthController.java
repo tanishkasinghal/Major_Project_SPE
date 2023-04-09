@@ -1,9 +1,13 @@
 package com.speMajor.demo.controller;
 import com.speMajor.demo.exception.ApiException;
+import com.speMajor.demo.payload.EmployeeDTO;
 import com.speMajor.demo.payload.JwtAuthRequest;
 import com.speMajor.demo.payload.JwtAuthResponse;
+import com.speMajor.demo.repository.EmployeeRepository;
 import com.speMajor.demo.security.JwtTokenHelper;
+import com.speMajor.demo.service.Employee.EmployeeService;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,10 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,6 +24,9 @@ public class AuthController {
     private final JwtTokenHelper jwtTokenHelper;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     public AuthController(JwtTokenHelper jwtTokenHelper, UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
         this.jwtTokenHelper = jwtTokenHelper;
@@ -53,5 +57,11 @@ public class AuthController {
             throw new ApiException("Invalid Username or Password !!");
         }
 
+    }
+
+    @PostMapping("/register/{deptId}")
+    public ResponseEntity<EmployeeDTO> registerUser(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long deptId){
+        EmployeeDTO newUser=this.employeeService.registerNewUser(employeeDTO,deptId);
+        return new ResponseEntity<EmployeeDTO>(newUser,HttpStatus.CREATED);
     }
 }
