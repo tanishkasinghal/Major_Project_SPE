@@ -8,6 +8,8 @@ import com.speMajor.demo.payload.EmployeeResponse;
 import java.util.List;
 
 public interface EmployeeService {
+
+    EmployeeDTO registerNewUser(EmployeeDTO employeeDTO,Long departmentId);
     EmployeeDTO addEmployee(EmployeeDTO EmployeeDTO,Long departmentId);
     EmployeeDTO updateEmployeeDetails(EmployeeDTO EmployeeDTO,Long id);
     EmployeeDTO getEmployeeById(Long id);
