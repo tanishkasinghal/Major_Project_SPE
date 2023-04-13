@@ -1,5 +1,6 @@
 package com.speMajor.demo.controller;
 import com.speMajor.demo.exception.ApiException;
+import com.speMajor.demo.model.Employee;
 import com.speMajor.demo.payload.EmployeeDTO;
 import com.speMajor.demo.payload.JwtAuthRequest;
 import com.speMajor.demo.payload.JwtAuthResponse;
@@ -7,6 +8,7 @@ import com.speMajor.demo.repository.EmployeeRepository;
 import com.speMajor.demo.security.JwtTokenHelper;
 import com.speMajor.demo.service.Employee.EmployeeService;
 import jakarta.validation.constraints.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,8 @@ public class AuthController {
     private final JwtTokenHelper jwtTokenHelper;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
-
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private EmployeeService employeeService;
 
@@ -44,7 +47,7 @@ public class AuthController {
         System.out.println("Token"+token);
         JwtAuthResponse response = new JwtAuthResponse();
         response.setToken(token);
-       // response.setUser(this.mapper.map((User) userDetails, UserDto.class));
+        response.setEmployee(this.modelMapper.map((Employee)userDetails,EmployeeDTO.class));
         return new ResponseEntity<JwtAuthResponse>(response, HttpStatus.OK);
     }
 

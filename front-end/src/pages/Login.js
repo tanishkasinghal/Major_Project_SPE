@@ -1,8 +1,49 @@
-import React from 'react'
-import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import React, { useState } from 'react'
+import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row, Toast } from 'reactstrap';
+import { doLogin } from '../auth';
 import { Base } from '../components/Base';
+import login from '../services/login-service';
 
 const Login = () => {
+
+    const [loginDetail, setLoginDetail] = useState({
+        username:'',
+        password:''
+    })
+
+    const handleChange=(event,property)=>{
+        setLoginDetail({...loginDetail,[property]:event.target.value})
+    }
+
+    const handleFormSubmit=(event)=>{
+        event.preventDefault();
+        console.log(loginDetail);
+
+        //validation
+        if(loginDetail.username.trim()=='' || loginDetail.password.trim()==''){
+            alert("Both fields are required")
+            return; 
+        };
+
+        //submit data to server
+        login(loginDetail).then((data)=>{
+            console.log(data)
+            //save data to localStorage
+            doLogin(data,()=>{
+                console.log("Login detail is saved to localStorage");
+            })
+        }).catch(error=>{
+            console.log(error);
+        })
+    };
+  
+    const handleReset=()=>{
+        setLoginDetail({
+            username:"",
+            password:""
+        });
+    };
+
   return (
     <Base>
         <Container>
@@ -13,18 +54,18 @@ const Login = () => {
                     <h3>Login </h3>
                 </CardHeader>
                 <CardBody>
-                    <Form>
+                    <Form onSubmit={handleFormSubmit}>
                         <FormGroup>
                             <Label for="username">Enter Username</Label>
-                            <Input type='text' id='username'/>
+                            <Input type='email' value={loginDetail.username} onChange={(e)=>handleChange(e,'username')} id='username'/>
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Enter Password</Label>
-                            <Input type='password' id='password'/>
+                            <Input type='password' value={loginDetail.password} onChange={(e)=>handleChange(e,'password')} id='password'/>
                         </FormGroup>
                         <Container className='text-center'>
                             <Button type='submit' color='dark'>Register</Button>
-                            <Button color='secondary' className='ms-2' type='reset'>Reset</Button>
+                            <Button onClick={handleReset} color='secondary' className='ms-2' type='reset'>Reset</Button>
                         </Container>
                     </Form>
                 </CardBody>

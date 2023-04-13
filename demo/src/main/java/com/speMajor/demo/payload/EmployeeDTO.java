@@ -1,6 +1,7 @@
 package com.speMajor.demo.payload;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.speMajor.demo.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,4 +31,9 @@ public class EmployeeDTO {
     private DepartmentDTO department;
     private Date joiningDate;
     private Set<RoleDTO> roles=new HashSet<>();
+
+    @JsonIgnore
+    public String getPassword(){
+        return this.password;
+    }
 }

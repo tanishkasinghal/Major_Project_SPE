@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Base } from '../components/Base';
-import addEmployee from '../services/user-service'
+import addEmployee from '../services/user-service';
+import loadcategories from '../services/department-service.js';
 
 const AddEmployee = () => {
+
+    const[departments,setDepartments]=useState([])
+
+    useEffect(() => {
+        loadcategories().then((data)=>{
+            console.log(data)
+            setDepartments(data)
+        }).catch(error=>{
+            console.log(error)
+        })
+    }, [])
+    
 
     const [data, setData] = useState({
         firstName:'',
         lastName:'',
         emailId:'',
-        password:''
+        password:'',
+        dept_id:''
     })
 
     const [error, setError] = useState({
@@ -32,6 +46,25 @@ const AddEmployee = () => {
 
     const submitForm=(e)=>{
         e.preventDefault();
+        
+
+        //validation
+        if(data.firstName.trim()===''){
+            alert("FirstName is required")
+            return;
+        }
+        if(data.emailId.trim()===''){
+            alert("EmailId is required")
+            return;
+        }
+        if(data.password.trim()===''){
+            alert("password is required")
+            return;
+        }
+        if(data.dept_id===''){
+            alert("Assign Department")
+            return;
+        }
 
         addEmployee(data).then((resp)=>{
             console.log(resp);
@@ -53,6 +86,7 @@ const AddEmployee = () => {
                     <h3>Register - Add Employee Information</h3>
                 </CardHeader>
                 <CardBody>
+                    {/* {JSON.stringify(data)} */}   
                     <Form onSubmit={submitForm}>
                         <FormGroup>
                             <Label for="firstName">Enter First Name</Label>
@@ -69,6 +103,17 @@ const AddEmployee = () => {
                         <FormGroup>
                             <Label for="password">Enter Password</Label>
                             <Input type='password' id='password' value={data.password} onChange={(e)=>handleChange(e,'password')}/>
+                        </FormGroup>
+                        <FormGroup>
+                        <Label for="department">Select</Label>
+                            <Input id="department" defaultValue={0} name="dept_id" type="select" onChange={(e)=>handleChange(e,'dept_id')}>
+                                <option disabled value={0}>-- Select Category --</option>
+                            {
+                                departments.map((department)=>(
+                                    <option value={department.id} key={department.id }>{department.deptName}</option>
+                                ))
+                            }
+                            </Input>
                         </FormGroup>
                         <Container className='text-center'>
                             <Button type='submit' color='dark'>Register</Button>

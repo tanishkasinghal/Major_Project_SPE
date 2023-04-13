@@ -13,6 +13,9 @@ import  Home  from './pages/Home';
 import Login from './pages/Login';
 import  AddEmployee  from './pages/AddEmployee';
 import  About  from './pages/About';
+import EmployeeDashboard from './pages/EmployeeDashboard';
+import PrivateRoute from './components/PrivateRoute';
+import ProfileInfo from './user-routes/ProfileInfo';
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -33,6 +36,10 @@ function App() {
       <Route path="/login" element={<Login/>}/>
       <Route path="/addEmployee" element={<AddEmployee/>}/>
       <Route path="/about" element={<About/>}/>
+      <Route path="/employee" element={<PrivateRoute/>}>
+        <Route path="dashboard" element={<EmployeeDashboard/>}/>
+        <Route path="profile-info" element={<ProfileInfo/>}/>
+      </Route>
     </Routes>
     </BrowserRouter>
   );
