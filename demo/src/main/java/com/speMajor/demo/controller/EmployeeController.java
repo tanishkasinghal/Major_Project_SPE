@@ -19,19 +19,29 @@ import java.util.List;
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/department/{deptId}/add")
    public ResponseEntity<EmployeeDTO> addEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,@PathVariable Long deptId){
        EmployeeDTO newEmployeeDTO=this.employeeService.addEmployee(employeeDTO,deptId);
        return new ResponseEntity<>(newEmployeeDTO, HttpStatus.CREATED);
    } //working
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register/{deptId}")
+    public ResponseEntity<EmployeeDTO> registerUser(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long deptId){
+        EmployeeDTO newUser=this.employeeService.registerNewUser(employeeDTO,deptId);
+        return new ResponseEntity<EmployeeDTO>(newUser,HttpStatus.CREATED);
+    }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/department/{deptId}/get")
     public ResponseEntity<List<EmployeeDTO>> getEmployeesByDepartmentId(@PathVariable Long deptId){
         List<EmployeeDTO> employeeDTOS=this.employeeService.getEmployeeByDepartment(deptId);
         return new ResponseEntity<List<EmployeeDTO>>(employeeDTOS,HttpStatus.OK);
     }
-   @PutMapping("/{id}")
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,@PathVariable Long id){
         EmployeeDTO updatedEmployeeDTO=this.employeeService.updateEmployeeDetails(employeeDTO,id);
         return ResponseEntity.ok(updatedEmployeeDTO);
@@ -43,8 +53,7 @@ public class EmployeeController {
         return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted Successfully",true),HttpStatus.OK);
    } //working
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
    @GetMapping("/")
    public ResponseEntity<EmployeeResponse> getAllEmployees(@RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
                                                            @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
@@ -59,7 +68,6 @@ public class EmployeeController {
         EmployeeDTO employeeDTO=this.employeeService.getEmployeeById(id);
         return new ResponseEntity<EmployeeDTO>(employeeDTO,HttpStatus.OK);
    }
-
    @GetMapping("/search/{keyword}")
    public ResponseEntity<List<EmployeeDTO>> searchEmployeeByName(
            @PathVariable("keyword") String keyword){

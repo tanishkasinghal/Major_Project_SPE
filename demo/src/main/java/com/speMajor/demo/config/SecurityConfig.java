@@ -49,8 +49,8 @@ public class  SecurityConfig {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/v2/api-docs").permitAll()
-                .requestMatchers(HttpMethod.GET).permitAll()
+                //.requestMatchers("/api/employee/**").permitAll()
+                //.requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
@@ -98,6 +98,7 @@ public class  SecurityConfig {
 
         source.registerCorsConfiguration("/**", corsConfiguration);
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(-110);
         return bean;
     }
 }

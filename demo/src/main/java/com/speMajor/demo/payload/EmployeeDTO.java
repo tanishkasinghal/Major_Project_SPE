@@ -2,6 +2,7 @@ package com.speMajor.demo.payload;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.speMajor.demo.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,5 +36,10 @@ public class EmployeeDTO {
     @JsonIgnore
     public String getPassword(){
         return this.password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password){
+        this.password=password;
     }
 }

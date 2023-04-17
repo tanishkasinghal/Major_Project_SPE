@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,18 +22,19 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<DepartmentDTO> addDepartment(@Valid @RequestBody DepartmentDTO departmentDTO){
         DepartmentDTO newDepartmentDTO=this.departmentService.addDepartment(departmentDTO);
         return new ResponseEntity<>(newDepartmentDTO, HttpStatus.CREATED);
     } //working
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<DepartmentDTO> updateDepartment(@Valid @RequestBody DepartmentDTO departmentDTO,@PathVariable Long id){
         DepartmentDTO updatedDepartmentDTO=this.departmentService.updateDepartmentDetails(departmentDTO,id);
         return ResponseEntity.ok(updatedDepartmentDTO);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteDepartment(@PathVariable("id") Long id){
         this.departmentService.deleteDepartment(id);

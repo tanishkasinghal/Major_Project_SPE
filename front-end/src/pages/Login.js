@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row, Toast } from 'reactstrap';
 import { doLogin } from '../auth';
 import { Base } from '../components/Base';
+import userContext from '../context/userContext';
 import login from '../services/login-service';
 
 const Login = () => {
-
+    const userContxtData = useContext(userContext);
+    const navigate=useNavigate()
     const [loginDetail, setLoginDetail] = useState({
         username:'',
         password:''
@@ -28,9 +31,15 @@ const Login = () => {
         //submit data to server
         login(loginDetail).then((data)=>{
             console.log(data)
-            //save data to localStorage
+            //save token to localStorage
             doLogin(data,()=>{
                 console.log("Login detail is saved to localStorage");
+                userContxtData.setUser({
+                    data: data.employee,
+                    login: true,
+                  });
+                //redirect to user dashboard
+                navigate("/employee/dashboard")
             })
         }).catch(error=>{
             console.log(error);
@@ -64,7 +73,7 @@ const Login = () => {
                             <Input type='password' value={loginDetail.password} onChange={(e)=>handleChange(e,'password')} id='password'/>
                         </FormGroup>
                         <Container className='text-center'>
-                            <Button type='submit' color='dark'>Register</Button>
+                            <Button type='submit' color='dark'>Login</Button>
                             <Button onClick={handleReset} color='secondary' className='ms-2' type='reset'>Reset</Button>
                         </Container>
                     </Form>

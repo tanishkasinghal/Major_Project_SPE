@@ -30,7 +30,6 @@ public class AuthController {
     private ModelMapper modelMapper;
     @Autowired
     private EmployeeService employeeService;
-
     public AuthController(JwtTokenHelper jwtTokenHelper, UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
         this.jwtTokenHelper = jwtTokenHelper;
         this.userDetailsService = userDetailsService;
@@ -62,9 +61,9 @@ public class AuthController {
 
     }
 
-    @PostMapping("/register/{deptId}")
-    public ResponseEntity<EmployeeDTO> registerUser(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long deptId){
-        EmployeeDTO newUser=this.employeeService.registerNewUser(employeeDTO,deptId);
-        return new ResponseEntity<EmployeeDTO>(newUser,HttpStatus.CREATED);
-    }
+//    @PostMapping("/register/{deptId}")
+//    public ResponseEntity<EmployeeDTO> registerUser(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long deptId){
+//        EmployeeDTO newUser=this.employeeService.registerNewUser(employeeDTO,deptId);
+//        return new ResponseEntity<EmployeeDTO>(newUser,HttpStatus.CREATED);
+//    }
 }

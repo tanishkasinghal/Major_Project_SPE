@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Base } from '../components/Base';
-import addEmployee from '../services/user-service';
+import {addEmployee} from '../services/user-service';
 import loadcategories from '../services/department-service.js';
+import { getCurrentUserDetail } from '../auth';
 
 const AddEmployee = () => {
 
+    const[user,setUser]=useState(undefined)  
     const[departments,setDepartments]=useState([])
 
     useEffect(() => {
+        setUser(getCurrentUserDetail())
         loadcategories().then((data)=>{
             console.log(data)
             setDepartments(data)
@@ -40,7 +43,8 @@ const AddEmployee = () => {
             firstName:'',
         lastName:'',
         emailId:'',
-        password:''
+        password:'',
+        dept_id:''
         })
     }
 
@@ -65,13 +69,22 @@ const AddEmployee = () => {
             alert("Assign Department")
             return;
         }
-
+       // console.log(data)
         addEmployee(data).then((resp)=>{
-            console.log(resp);
-            console.log("success log")
+            alert("Employee Registered")
+            setData({
+                firstName:'',
+        lastName:'',
+        emailId:'',
+        password:'',
+        dept_id:''
+            })
+            //console.log(resp);
+           // console.log("success log")
         }).catch((error)=>{
-            console.log(error)
-            console.log("Error Log")
+            alert("Error")
+           // console.log(error)
+           // console.log("Error Log")
         })
     }
   return (
