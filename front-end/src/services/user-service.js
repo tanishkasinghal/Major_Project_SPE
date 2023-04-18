@@ -12,5 +12,9 @@ export const loadEmp=(id)=>{
     return privateAxios.get(`/api/employee/`+id).then(Response=>Response.data)
 }
 
+export const deleteEmp=(emp)=>{
+    return privateAxios.delete(`/api/employee/${emp.id}`).then(Response=>Response.data)
+}
+
 //export default addEmployee;
 

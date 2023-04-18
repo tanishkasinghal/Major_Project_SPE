@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink as ReactLink, useNavigate} from 'react-router-dom';
 import {
   Collapse,
@@ -14,9 +14,11 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import { doLogout, getCurrentUserDetail, isLoggedIn } from '../auth';
+import userContext from '../context/userContext';
 
 
 const NavBar = () => {
+  const userContextData=useContext(userContext)
   const navigate=useNavigate()
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -30,22 +32,26 @@ const NavBar = () => {
   const logout=()=>{
     doLogout(()=>{
       setLogin(false)
+      userContextData.setUser({
+        data:null,
+        login:false
+      })
       navigate("/")
     })
   }
   return (
     <div>
         <Navbar color="dark" dark expand="md" className='px-5'>
-          <NavbarBrand tag={ReactLink} to="/">Employee Management</NavbarBrand>
+          <NavbarBrand tag={ReactLink} to="/employee/dashboard">Employee Management</NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="me-auto" navbar>
-            <NavItem>
+              {/* <NavItem>
                 <NavLink tag={ReactLink} to="/home">Home</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink tag={ReactLink} to="/about">About</NavLink>
-              </NavItem>
+              </NavItem> */}
               {   
                  (user) && (user.roles[0].id==501) &&  (
                     <>
@@ -60,7 +66,7 @@ const NavBar = () => {
               }
             
             
-              <UncontrolledDropdown nav inNavbar>
+              {/* <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   More
                 </DropdownToggle>
@@ -73,7 +79,7 @@ const NavBar = () => {
                     Services
                   </DropdownItem>
                 </DropdownMenu>
-              </UncontrolledDropdown>
+              </UncontrolledDropdown> */}
             </Nav>
             <Nav navbar>
               {

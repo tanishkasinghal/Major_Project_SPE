@@ -32,7 +32,6 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDTO>(newUser,HttpStatus.CREATED);
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/department/{deptId}/get")
     public ResponseEntity<List<EmployeeDTO>> getEmployeesByDepartmentId(@PathVariable Long deptId){

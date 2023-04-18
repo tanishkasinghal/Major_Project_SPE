@@ -39,7 +39,17 @@ public class Employee  implements UserDetails{
     @ManyToOne
     private Department department;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @ManyToOne
+//    private Role role;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade =
+                    {
+                            CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.REFRESH,
+                            CascadeType.PERSIST
+                    })
     @JoinTable(name = "emp_role",
     joinColumns=@JoinColumn(name="employee",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name = "role",referencedColumnName = "id"))
     private Set<Role> roles=new HashSet<>();

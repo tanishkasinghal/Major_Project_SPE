@@ -17,8 +17,10 @@ import AddDepartment from './pages/AddDepartment.js';
 import  About  from './pages/About';
 import EmployeeDashboard from './user-routes/EmployeeDashboard';
 import PrivateRoute from './components/PrivateRoute';
-import Profile from './user-routes/Profile';
+import ProfileByAdmin from './user-routes/ProfileByAdmin';
 import UserProvider from './context/UserProvider';
+
+import Profile from './user-routes/ProfileSelf';
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -35,14 +37,15 @@ function App() {
     <UserProvider>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home/>}/>
+      <Route path="/" element={<Login/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/addEmployee" element={<AddEmployee/>}/>
       <Route path="/addDepartment" element={<AddDepartment/>}/>
       <Route path="/about" element={<About/>}/>
       <Route path="/employee" element={<PrivateRoute/>}>
         <Route path="dashboard" element={<EmployeeDashboard/>}/>
-        <Route path="profile-info/:id" element={<Profile/>}/>
+        <Route path="profile-info/:id" element={<ProfileByAdmin/>}/>
+        <Route path="profile-info" element={<Profile/>}/>
       </Route>
     </Routes>
     </BrowserRouter>

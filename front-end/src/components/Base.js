@@ -6,7 +6,6 @@ export const Base = ({title="Welcome to our Website",children}) => {
     <div className="container-fluid p-0 m-0">
        <NavBar/>
         {children}
-        <h1>This is footer</h1>
     </div>
   )
 }
