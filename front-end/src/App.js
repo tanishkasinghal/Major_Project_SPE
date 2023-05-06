@@ -21,6 +21,7 @@ import ProfileByAdmin from './user-routes/ProfileByAdmin';
 import UserProvider from './context/UserProvider';
 
 import Profile from './user-routes/ProfileSelf';
+import UpdateDetail from './user-routes/UpdateDetail';
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -45,6 +46,7 @@ function App() {
       <Route path="/employee" element={<PrivateRoute/>}>
         <Route path="dashboard" element={<EmployeeDashboard/>}/>
         <Route path="profile-info/:id" element={<ProfileByAdmin/>}/>
+        <Route path="update-detail/:id" element={<UpdateDetail/>}/>
         <Route path="profile-info" element={<Profile/>}/>
       </Route>
     </Routes>

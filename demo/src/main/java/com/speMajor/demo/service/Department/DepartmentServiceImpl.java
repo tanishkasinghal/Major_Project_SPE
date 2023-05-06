@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-
     @Autowired
     private DepartmentRepository departmentRepository;
 

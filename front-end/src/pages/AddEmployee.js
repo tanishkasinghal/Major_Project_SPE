@@ -118,7 +118,7 @@ const AddEmployee = () => {
                             <Input type='password' id='password' value={data.password} onChange={(e)=>handleChange(e,'password')}/>
                         </FormGroup>
                         <FormGroup>
-                        <Label for="department">Select</Label>
+                        <Label for="department">Department</Label>
                             <Input id="department" defaultValue={0} name="dept_id" type="select" onChange={(e)=>handleChange(e,'dept_id')}>
                                 <option disabled value={0}>-- Select Category --</option>
                             {

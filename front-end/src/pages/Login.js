@@ -16,6 +16,7 @@ const Login = () => {
 
     const handleChange=(event,property)=>{
         setLoginDetail({...loginDetail,[property]:event.target.value})
+        console.log(loginDetail.username)
     }
 
     const handleFormSubmit=(event)=>{
